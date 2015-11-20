@@ -24,5 +24,5 @@ popd
 # Package the toolchain for upload.
 pushd ${WORKSPACE}
 tar cvJf rustc.tar.xz rustc/*
-tooltool add --visibility=public --unpack rustc.tar.xz
+/builds/tooltool.py add --visibility=public rustc.tar.xz
 popd

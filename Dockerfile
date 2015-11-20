@@ -12,7 +12,7 @@ RUN apt-get clean
 # Install tooltool directly from github.
 RUN mkdir /builds
 ADD https://raw.githubusercontent.com/mozilla/build-tooltool/master/tooltool.py /builds/tooltool.py
-RUN chmod +x /builds/tooltool.py
+RUN chmod +rx /builds/tooltool.py
 
 # Create user for doing the build.
 ENV USER worker
