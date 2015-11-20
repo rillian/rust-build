@@ -14,12 +14,6 @@ RUN mkdir /builds
 ADD https://raw.githubusercontent.com/mozilla/build-tooltool/master/tooltool.py /builds/tooltool.py
 RUN chmod +x /builds/tooltool.py
 
-# Install taskcluster's caching git wrapper.
-# Ubuntu's nodejs package is generally too old, so install from upstream.
-ADD node /usr/local/
-RUN node -v
-RUN npm install -g taskcluster-vcs
-
 # Create user for doing the build.
 ENV USER worker
 ENV HOME /home/${USER}
