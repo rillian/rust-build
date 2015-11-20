@@ -5,7 +5,7 @@ MAINTAINER    Ralph Giles <giles@mozilla.com>
 RUN apt-get update
 RUN apt-get upgrade -y
 RUN apt-get install -y \
-  ca-certificates sudo curl python \
+  ca-certificates sudo curl python xz-utils \
   make git binutils gcc g++
 RUN apt-get clean
 
