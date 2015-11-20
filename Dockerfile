@@ -1,6 +1,4 @@
-#FROM          taskcluster/centos6-build-upd:20151013094100
-#FROM          ubuntu:12.04
-FROM          ubuntu:14.04
+FROM          debian:latest
 MAINTAINER    Ralph Giles <giles@mozilla.com>
 
 # Update and install base tools.
