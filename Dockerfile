@@ -30,6 +30,6 @@ WORKDIR ${HOME}
 ADD             checkout-sources.sh build.sh bin/
 RUN             chmod +x bin/*
 
-# Set a default command useful for debugging.
+# Invoke our build scripts by default, but allow other commands.
 USER ${USER}
-CMD ["/bin/bash", "--login"]
+CMD bin/checkout-sources.sh && bin/build.sh
