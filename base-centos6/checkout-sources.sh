@@ -34,7 +34,7 @@ curl -Os ftp://gcc.gnu.org/pub/gcc/infrastructure/mpfr-2.4.2.tar.bz2
 curl -Os ftp://gcc.gnu.org/pub/gcc/infrastructure/gmp-4.3.2.tar.bz2
 
 GMP_VERSION=6.1.0
-gpg --keyserver hkp://keys.gnupg.net --recv-keys 0xF3599FF828C67298
+gpg --keyserver hkp://keys.gnupg.net --recv-keys 0xDDEF6956501441DF
 curl -Os https://gmplib.org/download/gmp/gmp-${GMP_VERSION}.tar.xz.sig
 curl -Os https://gmplib.org/download/gmp/gmp-${GMP_VERSION}.tar.xz
 gpg --verify gmp-${GMP_VERSION}.tar.xz.sig
