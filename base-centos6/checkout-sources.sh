@@ -1,4 +1,4 @@
-#!/bin/bash -vex
+#!/bin/bash
 
 set -x -e
 
@@ -29,9 +29,9 @@ tar xf gcc-${VERSION}.tar.bz2
 
 # deps
 
-curl -Os ftp://gcc.gnu.org/pub/gcc/infrastructure/mpc-0.8.1.tar.gz
-curl -Os ftp://gcc.gnu.org/pub/gcc/infrastructure/mpfr-2.4.2.tar.bz2
-curl -Os ftp://gcc.gnu.org/pub/gcc/infrastructure/gmp-4.3.2.tar.bz2
+#curl -Os ftp://gcc.gnu.org/pub/gcc/infrastructure/mpc-0.8.1.tar.gz
+#curl -Os ftp://gcc.gnu.org/pub/gcc/infrastructure/mpfr-2.4.2.tar.bz2
+#curl -Os ftp://gcc.gnu.org/pub/gcc/infrastructure/gmp-4.3.2.tar.bz2
 
 GMP_VERSION=6.1.0
 gpg --keyserver hkp://keys.gnupg.net --recv-keys 0xDDEF6956501441DF
@@ -44,7 +44,6 @@ MPFR_VERSION=3.1.3
 gpg --keyserver hkp://keys.gnupg.net --recv-keys 0x980C197698C3739D
 curl -Os http://www.mpfr.org/mpfr-current/mpfr-${MPFR_VERSION}.tar.xz.asc
 curl -Os http://www.mpfr.org/mpfr-current/mpfr-${MPFR_VERSION}.tar.xz
-curl -Os https://gmplib.org/download/gmp/gmp-${MPFR_VERSION}.tar.xz
 gpg --verify mpfr-${MPFR_VERSION}.tar.xz.asc
 tar xf mpfr-${MPFR_VERSION}.tar.xz
 
