@@ -3,7 +3,7 @@ MAINTAINER    Ralph Giles <giles@mozilla.com>
 
 # Update and install base tools.
 RUN yum upgrade -y
-RUN yum install -y make git binutils gcc g++
+RUN yum install -y make tar xz bzip2 git binutils gcc g++
 RUN yum clean all
 
 # Create user for doing the build.
@@ -23,5 +23,5 @@ ADD             checkout-sources.sh build.sh bin/
 RUN             chmod +x bin/*
 
 # Invoke our build scripts by default, but allow other commands.
-USER ${USER}
+#USER ${USER}
 CMD bin/checkout-sources.sh && bin/build.sh
