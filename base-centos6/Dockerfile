@@ -22,6 +22,7 @@ WORKDIR ${HOME}
 ADD             checkout-sources.sh build.sh bin/
 RUN             chmod +x bin/*
 
+ADD             SHA256SUMS.txt workspace/
 # Invoke our build scripts by default, but allow other commands.
 #USER ${USER}
 CMD bin/checkout-sources.sh && bin/build.sh
