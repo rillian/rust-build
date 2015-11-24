@@ -12,28 +12,8 @@ pushd ${WORKSPACE}
 sha256sum -c SHA256SUMS.txt
 
 # Configure and build.
-tar xf gmp-6.1.0.tar.xz
-pushd gmp-6.1.0
-./configure
-make -j ${CORES}
-make install
-popd
-
-pushd mpfr-3.1.3
-./configure --with-mpd=/usr/local
-make -j ${CORES}
-make install
-popd
-
-pushd mpc-1.0.3
-./configure --with-gmp=/usr/local --with-mpfr=/usr/local
-make -j ${CORES}
-make install
-popd
-
-pushd ${WORKSPACE}/gcc
-./configure ./configure --with-gmp=/usr/local --with-mpfr=/usr/local --with-mpc=/usr/local --disable-multilib
-# parallel make takes several tries
+pushd ${WORKSPACE}/gcc-4.8.5
+./configure ./configure --enable-languages=c,c++ --disable-multilib
 make -j ${CORES}
 make install
 popd

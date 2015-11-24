@@ -3,7 +3,7 @@ MAINTAINER    Ralph Giles <giles@mozilla.com>
 
 # Update and install base tools.
 RUN yum upgrade -y
-RUN yum install -y make tar xz bzip2 git binutils gcc g++ m4
+RUN yum install -y make tar xz bzip2 git binutils gcc gcc-c++
 RUN yum clean all
 
 # Create user for doing the build.
