@@ -17,3 +17,9 @@ pushd ${WORKSPACE}/gcc-4.8.5
 make -j ${CORES}
 make install
 popd
+
+pushd ${WORKSPACE}/Python-2.7.10
+./configure
+make -j ${CORES}
+make install
+popd

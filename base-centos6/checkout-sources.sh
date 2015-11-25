@@ -53,4 +53,11 @@ curl -Os ftp://ftp.gnu.org/gnu/mpc/mpc-${MPC_VERSION}.tar.gz.sig
 curl -Os ftp://ftp.gnu.org/gnu/mpc/mpc-${MPC_VERSION}.tar.gz
 gpg --verify mpc-${MPC_VERSION}.tar.gz.sig
 tar xf mpc-${MPC_VERSION}.tar.gz
+
+PYTHON_VERSION=2.7.10
+gpg --keyserver hkp://keys.gnupg.net --recv-keys 0x04C367C218ADD4FF
+curl -Os https://www.python.org/ftp/python/${PYTHON_VERSION}/Python-${PYTHON_VERSION}.tar.xz.asc
+curl -Os https://www.python.org/ftp/python/${PYTHON_VERSION}/Python-${PYTHON_VERSION}.tar.xz
+gpg --verify Python-${PYTHON_VERSION}.tar.xz
+
 popd
