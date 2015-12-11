@@ -1,4 +1,4 @@
-FROM          centos-gcc:build.clean
+FROM          quay.io/rillian/rust-buildbot
 MAINTAINER    Ralph Giles <giles@mozilla.com>
 
 # Update and install base tools.
