@@ -2,13 +2,7 @@
 
 set -x -e
 
-: RUST_RESPOSITORY  ${RUST_REPOSITORY:=https://github.com/rust-lang/rust}
-: RUST_BASE_REPOSITORY ${RUST_BASE_REPOSITORY:=${RUST_REPOSITORY}}
-: RUST_HEAD_REPOSITORY ${RUST_HEAD_REPOSITORY:=${RUST_REPOSITORY}}
-: RUST_HEAD_REV        ${RUST_HEAD_REV:=stable}
-: RUST_HEAD_REF        ${RUST_HEAD_REV:=stable}
-
-: WORKSPACE                     ${WORKSPACE:=/home/worker/workspace}
+: WORKSPACE ${WORKSPACE:=/home/worker}
 
 CORES=$(nproc || grep -c ^processor /proc/cpuinfo || sysctl -n hw.ncpu)
 
@@ -16,7 +10,7 @@ set -v
 
 # Configure and build rust.
 pushd ${WORKSPACE}/rust
-./configure --prefix=${WORKSPACE}/rustc --enable-rpath
+./configure --prefix=${WORKSPACE}/rustc --enable-rpath --disable-docs
 make -j ${CORES}
 make install
 popd

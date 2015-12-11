@@ -7,7 +7,7 @@ set -x -e
 : RUST_REPOSITORY ${RUST_REPOSITORY:=https://github.com/rust-lang/rust}
 : RUST_BRANCH     ${RUST_BRANCH:=stable}
 
-: WORKSPACE       ${WORKSPACE:=/home/worker/workspace}
+: WORKSPACE       ${WORKSPACE:=/home/worker}
 
 set -v
 
