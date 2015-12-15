@@ -27,11 +27,11 @@ make -j ${CORES}
 make install
 popd
 # Copy 32 bit stdlib into the install directory for cross support.
-cp -r ${M32}/${M32}/lib/rustlib/${M32} rustc/lib/rustlib/
+cp -r ${M32}/${M32}/stage2/lib/rustlib/${M32} rustc/lib/rustlib/
 popd
 
 # Package the toolchain for upload.
 pushd ${WORKSPACE}/rust-build
 tar cvJf rustc.tar.xz rustc/*
-/builds/tooltool.py add --visibility=public rustc.tar.xz
+/build/tooltool.py add --visibility=public rustc.tar.xz
 popd
