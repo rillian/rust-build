@@ -9,7 +9,7 @@ CORES=$(nproc || grep -c ^processor /proc/cpuinfo || sysctl -n hw.ncpu)
 set -v
 
 # Configure and build rust.
-OPTIONS="--enable-rpath --disable-docs"
+OPTIONS="--enable-rpath --enable-llvm-static-stdcpp --disable-docs"
 M32="i686-unknown-linux-gnu"
 M64="x86_64-unknown-linux-gnu"
 
