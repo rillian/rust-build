@@ -3,7 +3,6 @@ MAINTAINER    Ralph Giles <giles@mozilla.com>
 
 # Update base.
 RUN yum upgrade -y
-RUN yum install -y file
 RUN yum clean all
 
 # Install tooltool directly from github.
