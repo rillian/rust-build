@@ -1,6 +1,10 @@
 FROM          quay.io/rillian/rust-buildbot
 MAINTAINER    Ralph Giles <giles@mozilla.com>
 
+# Reset user/workdir from parent image so we can install software.
+WORKDIR /
+USER root
+
 # Update base.
 RUN yum upgrade -y
 RUN yum clean all
