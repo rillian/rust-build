@@ -29,4 +29,4 @@ WORKDIR ${HOME}
 
 # Invoke our build scripts by default, but allow other commands.
 USER ${USER}
-CMD /build/checkout-sources.sh && /build/build.sh
+ENTRYPOINT /build/checkout-sources.sh && /build/build.sh
