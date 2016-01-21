@@ -1,2 +1,2 @@
-all: Dockerfile checkout-sources.sh build.sh
+all: Dockerfile fetch_rust.sh build_rust.sh
 	docker build -t rust-build .
