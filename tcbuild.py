@@ -143,7 +143,7 @@ def upload_to_tooltool(tooltool_auth, task_id, artifact):
         os.chdir(oldcwd)
 
 def update_manifest(artifact, manifest, local_gecko_clone):
-    platform = os.path.basename(artifact).split('-')[0]
+    platform = linux
     manifest_dir = os.path.join(local_gecko_clone,
                                 'testing', 'config', 'tooltool-manifests')
     platform_dir = [p for p in os.listdir(manifest_dir)
@@ -175,8 +175,9 @@ def main():
     run_id = wait_for_task(queue, task_id, initial_wait)
     for artifact in fetch_artifacts(queue, task_id, run_id):
         print(artifact)
-        manifest = upload_to_tooltool(args.tooltool_auth, task_id, artifact)
-        update_manifest(artifact, manifest, args.local_gecko_clone)
+        print('Skipping tooltool upload and manifest update for now...')
+        #manifest = upload_to_tooltool(args.tooltool_auth, task_id, artifact)
+        #update_manifest(artifact, manifest, args.local_gecko_clone)
 
 if __name__ == '__main__':
     main()
