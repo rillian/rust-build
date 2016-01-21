@@ -8,7 +8,7 @@
         "command": [
             "/bin/bash",
             "-c",
-            "/build/checkout-sources.sh && /build/build.sh"
+            "/build/fetch_rust.sh && /build/build_rust.sh"
         ],
         "env": {
             "RUST_BRANCH": "{rust_branch}"
