@@ -25,14 +25,8 @@
               "type": "file"
             }
         },
-        "features": {
-            "relengAPIProxy": true
-        },
         "maxRunTime": 6000
     },
-    "scopes": [
-        "docker-worker:relengapi-proxy:tooltool.download.internal"
-    ],
     "metadata": {
         "name": "Rust toolchain build",
         "description": "Builds the rust toolchain for use in gecko builders.",
