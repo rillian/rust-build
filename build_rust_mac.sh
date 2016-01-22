@@ -13,6 +13,7 @@ PREFIX=${WORKSPACE}/rustc
 mkdir -p ${WORKSPACE}/gecko-rust-mac
 pushd ${WORKSPACE}/gecko-rust-mac
 
+export MACOSX_DEPLOYMENT_TARGET=10.7
 ${WORKSPACE}/rust/configure --prefix=${PREFIX} --target=${TARGETS} ${OPTIONS}
 make -j ${CORES}
 
