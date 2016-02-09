@@ -32,7 +32,9 @@
         "maxRunTime": 6000
     },
     "scopes": [
+      "docker-worker:relengapi-proxy:tooltool.download.public",
       "docker-worker:relengapi-proxy:tooltool.download.internal",
+      "docker-worker:relengapi-proxy:tooltool.upload.public",
       "docker-worker:relengapi-proxy:tooltool.upload.internal"
     ],
     "metadata": {
