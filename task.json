@@ -26,7 +26,6 @@
             }
         },
         "features": {
-          "interactive": true,
           "relengAPIProxy": true
         },
         "maxRunTime": 6000
