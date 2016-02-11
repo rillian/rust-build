@@ -4,11 +4,11 @@
     "created": "{task_created}",
     "deadline": "{task_deadline}",
     "payload": {
-        "image": "quay.io/rust/gecko-rust-build",
+        "image": "quay.io/rust/gecko-rust-build
         "command": [
             "/bin/bash",
             "-c",
-            "/build/fetch_rust.sh && /build/build_rust.sh"
+            "/build/fetch_rust.sh && /build/build_rust.sh && /build/upload_rust.sh"
         ],
         "env": {
             "RUST_BRANCH": "{rust_branch}"
@@ -32,10 +32,7 @@
         "maxRunTime": 6000
     },
     "scopes": [
-      "docker-worker:relengapi-proxy:tooltool.download.public",
-      "docker-worker:relengapi-proxy:tooltool.download.internal",
-      "docker-worker:relengapi-proxy:tooltool.upload.public",
-      "docker-worker:relengapi-proxy:tooltool.upload.internal"
+      "docker-worker:relengapi-proxy:tooltool.upload.public"
     ],
     "metadata": {
         "name": "Rust toolchain build",

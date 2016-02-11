@@ -92,11 +92,16 @@ def fetch_artifact(queue, task_id, run_id, name, dest_dir):
     '''
     url = queue.buildUrl('getArtifact', task_id, run_id, name)
     fn = os.path.join(dest_dir, os.path.basename(name))
+    print('Fetching %s...' % name)
     with open(fn, 'wb') as f:
         r = requests.get(url, stream=True)
         for chunk in r.iter_content(1024):
             f.write(chunk)
     return fn
+
+def make_artifact_dir(task_id, run_id):
+    prefix = 'tc-artifacts.%s.%d' % (task_id, run_id)
+    tempdir = tempfile.mkdtemp(prefix=prefix)
 
 def fetch_artifacts(queue, task_id, run_id):
     '''
@@ -104,16 +109,21 @@ def fetch_artifacts(queue, task_id, run_id):
     temporary files, and yield the path to each.
     '''
     try:
-        tempdir = tempfile.mkdtemp(prefix='stackwalk-artifacts')
+        tempdir = make_artifact_dir(task_id, run_id)
         res = queue.listArtifacts(task_id, run_id)
         for a in res['artifacts']:
             # Skip logs
             if a['name'].startswith('public/logs'):
                 continue
+            # Skip interfaces
+            if a['name'].startswith('private/docker-worker'):
+                continue
             yield fetch_artifact(queue, task_id, run_id, a['name'], tempdir)
     finally:
         if os.path.isdir(tempdir):
-            shutil.rmtree(tempdir)
+            #shutil.rmtree(tempdir)
+            print('Artifacts downloaded to %s' % tempdir)
+            pass
 
 def upload_to_tooltool(tooltool_auth, task_id, artifact):
     '''
@@ -174,7 +184,7 @@ def main():
         task_id, initial_wait = spawn_task(queue, args), 150
     run_id = wait_for_task(queue, task_id, initial_wait)
     for artifact in fetch_artifacts(queue, task_id, run_id):
-        print(artifact)
+        print("Got %s" % artifact)
         print('Skipping tooltool upload and manifest update for now...')
         #manifest = upload_to_tooltool(args.tooltool_auth, task_id, artifact)
         #update_manifest(artifact, manifest, args.local_gecko_clone)
