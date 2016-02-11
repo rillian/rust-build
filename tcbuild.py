@@ -100,8 +100,9 @@ def fetch_artifact(queue, task_id, run_id, name, dest_dir):
     return fn
 
 def make_artifact_dir(task_id, run_id):
-    prefix = 'tc-artifacts.%s.%d' % (task_id, run_id)
-    tempdir = tempfile.mkdtemp(prefix=prefix)
+    prefix = 'tc-artifacts.%s.%d.' % (task_id, run_id)
+    print('making artifact dir %s' % prefix)
+    return tempfile.mkdtemp(prefix=prefix)
 
 def fetch_artifacts(queue, task_id, run_id):
     '''

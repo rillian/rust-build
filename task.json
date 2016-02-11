@@ -4,7 +4,7 @@
     "created": "{task_created}",
     "deadline": "{task_deadline}",
     "payload": {
-        "image": "quay.io/rust/gecko-rust-build
+        "image": "quay.io/rust/gecko-rust-build",
         "command": [
             "/bin/bash",
             "-c",
