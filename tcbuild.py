@@ -165,8 +165,8 @@ def update_manifest(artifact, manifest, local_gecko_clone):
 def main():
     parser = argparse.ArgumentParser(description='Build and upload binaries')
     parser.add_argument('taskcluster_auth', help='Path to a file containing Taskcluster client ID and authentication token as a JSON file in the form {"clientId": "...", "accessToken": "..."}')
-    parser.add_argument('tooltool_auth', help='Path to a file containing a tooltool authentication token valid for uploading files')
-    parser.add_argument('local_gecko_clone', help='Path to a local Gecko clone whose tooltool manifests will be updated with the newly-built binaries')
+    parser.add_argument('--tooltool-auth', help='Path to a file containing a tooltool authentication token valid for uploading files')
+    parser.add_argument('--local-gecko-clone', help='Path to a local Gecko clone whose tooltool manifests will be updated with the newly-built binaries')
     parser.add_argument('--rust-branch', default='stable',
                         help='Revision of the rust repository to use')
     parser.add_argument('--task', help='Use an existing task')
@@ -181,9 +181,10 @@ def main():
     run_id = wait_for_task(queue, task_id, initial_wait)
     for artifact in fetch_artifacts(queue, task_id, run_id):
         print("Got %s" % artifact)
-        print('Skipping tooltool upload and manifest update for now...')
-        #manifest = upload_to_tooltool(args.tooltool_auth, task_id, artifact)
-        #update_manifest(artifact, manifest, args.local_gecko_clone)
+        if args.tooltool_auth:
+            manifest = upload_to_tooltool(args.tooltool_auth, task_id, artifact)
+        if args.local_gecko_clone:
+            update_manifest(artifact, manifest, args.local_gecko_clone)
 
 if __name__ == '__main__':
     main()
