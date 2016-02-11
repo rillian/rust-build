@@ -167,10 +167,6 @@ def main():
     parser.add_argument('taskcluster_auth', help='Path to a file containing Taskcluster client ID and authentication token as a JSON file in the form {"clientId": "...", "accessToken": "..."}')
     parser.add_argument('tooltool_auth', help='Path to a file containing a tooltool authentication token valid for uploading files')
     parser.add_argument('local_gecko_clone', help='Path to a local Gecko clone whose tooltool manifests will be updated with the newly-built binaries')
-    parser.add_argument('--gecko-repository', default='https://hg.mozilla.org/mozilla-central',
-                        help='URL to the Gecko repository from which to use the minidump_stackwalk build script')
-    parser.add_argument('--gecko-rev', default='default',
-                        help='Revision of the Gecko repository to use')
     parser.add_argument('--rust-branch', default='stable',
                         help='Revision of the rust repository to use')
     parser.add_argument('--task', help='Use an existing task')
