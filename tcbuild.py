@@ -93,10 +93,15 @@ def fetch_artifact(queue, task_id, run_id, name, dest_dir):
     url = queue.buildUrl('getArtifact', task_id, run_id, name)
     fn = os.path.join(dest_dir, os.path.basename(name))
     print('Fetching %s...' % name)
-    with open(fn, 'wb') as f:
+    try:
         r = requests.get(url, stream=True)
-        for chunk in r.iter_content(1024):
-            f.write(chunk)
+        r.raise_for_status()
+        with open(fn, 'wb') as f:
+            for chunk in r.iter_content(1024):
+                f.write(chunk)
+    except requests.exceptions.HTTPError:
+        print('HTTP Error %d fetching %s' % (r.status_code, name))
+        return None
     return fn
 
 def make_artifact_dir(task_id, run_id):
