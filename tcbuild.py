@@ -186,7 +186,6 @@ def main():
         task_id, initial_wait = spawn_task(queue, args), 150
     run_id = wait_for_task(queue, task_id, initial_wait)
     for artifact in fetch_artifacts(queue, task_id, run_id):
-        print("Got %s" % artifact)
         if args.tooltool_auth:
             manifest = upload_to_tooltool(args.tooltool_auth, task_id, artifact)
         if args.local_gecko_clone:
