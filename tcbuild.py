@@ -82,6 +82,7 @@ def wait_for_task(queue, task_id, initial_wait=150):
         if state in ('failed', 'exception'):
             raise Exception('Task failed')
         sys.stdout.write('.')
+        sys.stdout.flush()
         time.sleep(10)
 
 def fetch_artifact(queue, task_id, run_id, name, dest_dir):
