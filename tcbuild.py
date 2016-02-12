@@ -65,7 +65,7 @@ def spawn_task(queue, args):
     print('--- %s task %s submitted ---' % (now, task_id))
     return task_id
 
-def wait_for_task(queue, task_id, initial_wait=150):
+def wait_for_task(queue, task_id, initial_wait=5):
     '''
     Wait until queue reports that task task_id is completed, and return
     its run id.
@@ -194,7 +194,7 @@ def main():
     if args.task:
         task_id, initial_wait = args.task, 0
     else:
-        task_id, initial_wait = spawn_task(queue, args), 150
+        task_id, initial_wait = spawn_task(queue, args), 25
     run_id = wait_for_task(queue, task_id, initial_wait)
     for artifact in fetch_artifacts(queue, task_id, run_id):
         if args.tooltool_auth:
