@@ -62,7 +62,7 @@ def spawn_task(queue, args):
         keys['artifacts_expires'] = (now + datetime.timedelta(days=1)).isoformat() + 'Z'
         payload = fill_template(template, keys)
     queue.createTask(task_id, payload)
-    print(task_id)
+    print('--- %s task %s submitted ---' % (now, task_id))
     return task_id
 
 def wait_for_task(queue, task_id, initial_wait=150):
@@ -71,11 +71,17 @@ def wait_for_task(queue, task_id, initial_wait=150):
     its run id.
 
     Sleep for initial_wait seconds before checking status the first time.
+    Then poll periodically and print a running log of the task status.
     '''
     time.sleep(initial_wait)
+    previous_state = None
     while True:
         res = queue.status(task_id)
         state = res['status']['state']
+        if state != previous_state:
+            now = datetime.datetime.utcnow()
+            print('--- %s task %s %s ---' % (now, task_id, state))
+            previous_state = state
         if state == 'completed':
             print('done')
             return len(res['status']['runs']) - 1
