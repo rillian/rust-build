@@ -83,10 +83,10 @@ def wait_for_task(queue, task_id, initial_wait=5):
             now = datetime.datetime.utcnow()
             if have_ticks:
               sys.stdout.write('\n')
+              have_ticks = False
             print('--- %s task %s %s ---' % (now, task_id, state))
             previous_state = state
         if state == 'completed':
-            print('done')
             return len(res['status']['runs']) - 1
         if state in ('failed', 'exception'):
             raise Exception('Task failed')
