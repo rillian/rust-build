@@ -75,11 +75,14 @@ def wait_for_task(queue, task_id, initial_wait=150):
     '''
     time.sleep(initial_wait)
     previous_state = None
+    have_ticks = False
     while True:
         res = queue.status(task_id)
         state = res['status']['state']
         if state != previous_state:
             now = datetime.datetime.utcnow()
+            if have_ticks:
+              sys.stdout.write('\n')
             print('--- %s task %s %s ---' % (now, task_id, state))
             previous_state = state
         if state == 'completed':
@@ -89,6 +92,7 @@ def wait_for_task(queue, task_id, initial_wait=150):
             raise Exception('Task failed')
         sys.stdout.write('.')
         sys.stdout.flush()
+        have_ticks = True
         time.sleep(10)
 
 def fetch_artifact(queue, task_id, run_id, name, dest_dir):
