@@ -13,8 +13,9 @@ pushd ${WORKSPACE}
 if test -n "$TASK_ID";
   # If we're running on task cluster, use the upload-capable tunnel.
   TOOLTOOL_OPTS="--url=http://relengapi/tooltool/"
+  MESSAGE="Taskcluster upload ${TASK_ID}/${RUN_ID} $0"
+else
+  MESSAGE="Rust toolchain build for gecko"
 fi
-MESSAGE="Taskcluster upload ${TASK_ID}/${RUN_ID} $0"
-tar cvJf rustc.tar.xz rustc/*
 /build/tooltool.py upload ${TOOLTOOL_OPTS} --msg=${MESSAGE}
 popd
