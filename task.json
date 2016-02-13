@@ -5,11 +5,6 @@
     "deadline": "{task_deadline}",
     "payload": {
         "image": "quay.io/rust/gecko-rust-build",
-        "command": [
-            "/bin/bash",
-            "-c",
-            "/build/fetch_rust.sh && /build/build_rust.sh && /build/upload_rust.sh"
-        ],
         "env": {
             "RUST_BRANCH": "{rust_branch}"
         },
