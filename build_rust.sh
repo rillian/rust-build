@@ -19,6 +19,7 @@ pushd ${WORKSPACE}/rust-build
 ${WORKSPACE}/rust/configure --prefix=${WORKSPACE}/rustc \
   --target=${x64},${x32} ${OPTIONS}
 make -j ${CORES}
+make dist
 make install
 popd
 

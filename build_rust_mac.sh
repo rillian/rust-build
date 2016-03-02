@@ -19,6 +19,7 @@ make -j ${CORES}
 
 rm -rf ${PREFIX}
 mkdir ${PREFIX}
+make dist
 make install
 popd
 
