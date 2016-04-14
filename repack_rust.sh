@@ -1,6 +1,9 @@
 #!/bin/bash -vex
 
-set -x -e
+set -e
+
+# Set verbose options on taskcluster for logging.
+test -n "$TASK_ID" && set -x
 
 # Inputs, with defaults
 
@@ -81,7 +84,7 @@ check() {
   echo
 }
 
-set -v
+test -n "$TASK_ID" && set -v
 
 linux64="x86_64-unknown-linux-gnu"
 linux32="i686-unknown-linux-gnu"
