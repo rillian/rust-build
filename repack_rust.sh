@@ -12,8 +12,13 @@ test -n "$TASK_ID" && set -x
 
 : WORKSPACE       ${WORKSPACE:=/home/worker}
 
+die() {
+  echo "ERROR: $@"
+  exit 1
+}
+
 fetch() {
-  echo "fetching $1..."
+  echo "Fetching $1..."
   curl -Os ${RUST_URL}${1}.asc
   curl -Os ${RUST_URL}${1}
   curl -Os ${RUST_URL}${1}.sha256
@@ -21,7 +26,7 @@ fetch() {
 }
 
 verify() {
-  echo "verifying $1..."
+  echo "Verifying $1..."
   shasum -c ${1}.sha256
   shasum -c ${1}.asc.sha256
   gpg --verify ${1}.asc ${1}
@@ -31,19 +36,26 @@ verify() {
 fetch_rustc() {
   arch=$1
   echo "Retrieving rustc build for $arch..."
-  for pkg in $(cat ${IDX} | grep ^rustc | grep $arch); do
-    fetch ${pkg}
-    verify ${pkg}
-  done
+  pkg=$(cat ${IDX} | grep ^rustc | grep $arch)
+  test -n "${pkg}" || die "No rustc build for $arch in the manifest."
+  test 1 == $(echo ${pkg} | wc -w) ||
+    die "Multiple rustc builds for $arch in the manifest."
+  fetch ${pkg}
+  verify ${pkg}
 }
 
 fetch_std() {
-  echo "Retrieving rust-std builds for $@"
+  echo "Retrieving rust-std builds for:"
   for arch in $@; do
-    for pkg in $(cat ${IDX} | grep rust-std | grep $arch); do
-      fetch ${pkg}
-      verify ${pkg}
-    done
+    echo "  $arch"
+  done
+  for arch in $@; do
+    pkg=$(cat ${IDX} | grep rust-std | grep $arch)
+    test -n "${pkg}" || die "No rust-std builds for $arch in the manifest."
+    test 1 == $(echo ${pkg} | wc -w) ||
+      die "Multiple rust-std builds for $arch in the manifest."
+    fetch ${pkg}
+    verify ${pkg}
   done
 }
 
@@ -70,12 +82,13 @@ install_std() {
 
 check() {
   if test -x ${TARGET}/bin/rustc; then
+    file ${TARGET}/bin/rustc
     ${TARGET}/bin/rustc --version
   elif test -x ${TARGET}/bin/rustc.exe; then
+    file ${TARGET}/bin/rustc.exe
     ${TARGET}/bin/rustc.exe --version
   else
-    echo "ERROR: Couldn't fine rustc executable"
-    exit 1
+    die "ERROR: Couldn't fine rustc executable"
   fi
   echo "Installed components:"
   for component in $(cat ${TARGET}/lib/rustlib/components); do
