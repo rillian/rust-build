@@ -32,6 +32,7 @@ x64="x86_64-unknown-linux-gnu"
 arm="arm-linux-androideabi"
 
 # Fetch the manifest
+
 IDX=channel-rustc-${RUST_CHANNEL}
 
 fetch ${IDX}
@@ -48,23 +49,28 @@ for arch in $x32 $x64; do
   done
 done
   
-# FIXME: generalize this to use the arch and manifest lists.
+# Unpack the bits we want.
+
 TARGET=rustc
 INSTALL_OPTS="--prefix=${PWD}/${TARGET} --disable-ldconfig"
 rm -rf ${TARGET}
 
 # Install rustc.
-tar xf rustc-beta-x86_64-unknown-linux-gnu.tar.gz
-rustc-beta-x86_64-unknown-linux-gnu/install.sh ${INSTALL_OPTS}
-rm -rf rustc-beta-x86_64-unknown-linux-gnu
+pkg=$(cat ${IDX} | grep ^rustc | grep $x64)
+base=${pkg%%.tar.*}
+tar xf ${pkg}
+${base}/install.sh ${INSTALL_OPTS}
+rm -rf ${base}
 
 # Install standard libraries for targets we need.
-tar xf rust-std-beta-x86_64-unknown-linux-gnu.tar.gz
-rust-std-beta-x86_64-unknown-linux-gnu/install.sh ${INSTALL_OPTS}
-rm -rf rust-std-beta-x86_64-unknown-linux-gnu
-tar xf rust-std-beta-i686-unknown-linux-gnu.tar.gz
-rust-std-beta-i686-unknown-linux-gnu/install.sh ${INSTALL_OPTS}
-rm -rf rust-std-beta-i686-unknown-linux-gnu
+for arch in $x32 $x64; do
+  for pkg in $(cat ${IDX} | grep rust-std | grep $arch); do
+    base=${pkg%%.tar.*}
+    tar xf ${pkg}
+    ${base}/install.sh ${INSTALL_OPTS}
+    rm -rf ${base}
+  done
+done
 
 ${TARGET}/bin/rustc --version
 echo "Installed components:"
