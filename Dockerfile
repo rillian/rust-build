@@ -16,6 +16,7 @@ RUN chmod +rx /build/tooltool.py
 
 # Add build scripts.
 ADD             fetch_rust.sh build_rust.sh upload_rust.sh /build/
+ADD             repack_rust.sh /build/
 RUN             chmod +x /build/*
 
 # Create user for doing the build.
