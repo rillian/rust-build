@@ -104,6 +104,9 @@ linux32="i686-unknown-linux-gnu"
 
 android="arm-linux-androideabi"
 
+mac64="x86_64-apple-darwin"
+mac32="i686-apple-darwin"
+
 win64="x86_64-pc-windows-msvc"
 win32="i686-pc-windows-msvc"
 win32_i586="i586-pc-windows-msvc"
@@ -155,6 +158,32 @@ install_rustc $win32
 install_std $win32 $win32_i586
 
 tar cjf rustc-$win32-repack.tar.bz2 ${TARGET}/*
+check ${TARGET}
+
+# Repack the mac builds.
+
+fetch_rustc $mac64
+fetch_std $mac64 $mac32
+
+rm -rf ${TARGET}
+
+install_rustc $mac64
+install_std $mac64 $mac32
+
+tar cjf rustc-mac-repack.tar.bz2 ${TARGET}/*
+check ${TARGET}
+
+# Repack mac cross build.
+
+fetch_rustc $linux64
+fetch_std $linux64
+
+rm -rf ${TARGET}
+
+install_rustc $linux64
+install_std $linux64 $mac64 $mac32
+
+tar cJf rustc-mac-cross-repack.tar.xz ${TARGET}/*
 check ${TARGET}
 
 rm -rf ${TARGET}
