@@ -150,12 +150,12 @@ check ${TARGET}
 # Repack the win32 builds.
 
 fetch_rustc $win32
-fetch_std $win32 $win32_i586
+fetch_std $win32
 
 rm -rf ${TARGET}
 
 install_rustc $win32
-install_std $win32 $win32_i586
+install_std $win32
 
 tar cjf rustc-$win32-repack.tar.bz2 ${TARGET}/*
 check ${TARGET}
