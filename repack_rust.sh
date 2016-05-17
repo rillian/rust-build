@@ -122,68 +122,79 @@ TARGET=rustc
 INSTALL_OPTS="--prefix=${PWD}/${TARGET} --disable-ldconfig"
 
 # Repack the linux64 builds.
+repack_linux64() {
+  fetch_rustc $linux64
+  fetch_std $linux64 $linux32
 
-fetch_rustc $linux64
-fetch_std $linux64 $linux32
+  rm -rf ${TARGET}
 
-rm -rf ${TARGET}
+  install_rustc $linux64
+  install_std $linux64 $linux32
 
-install_rustc $linux64
-install_std $linux64 $linux32
-
-tar cJf rustc-$linux64-repack.tar.xz ${TARGET}/*
-check ${TARGET}
+  tar cJf rustc-$linux64-repack.tar.xz ${TARGET}/*
+  check ${TARGET}
+}
 
 # Repack the win64 builds.
+repack_win64() {
+  fetch_rustc $win64
+  fetch_std $win64
 
-fetch_rustc $win64
-fetch_std $win64
+  rm -rf ${TARGET}
 
-rm -rf ${TARGET}
+  install_rustc $win64
+  install_std $win64
 
-install_rustc $win64
-install_std $win64
-
-tar cjf rustc-$win64-repack.tar.bz2 ${TARGET}/*
-check ${TARGET}
+  tar cjf rustc-$win64-repack.tar.bz2 ${TARGET}/*
+  check ${TARGET}
+}
 
 # Repack the win32 builds.
+repack_win32() {
+  fetch_rustc $win32
+  fetch_std $win32
 
-fetch_rustc $win32
-fetch_std $win32
+  rm -rf ${TARGET}
 
-rm -rf ${TARGET}
+  install_rustc $win32
+  install_std $win32
 
-install_rustc $win32
-install_std $win32
-
-tar cjf rustc-$win32-repack.tar.bz2 ${TARGET}/*
-check ${TARGET}
+  tar cjf rustc-$win32-repack.tar.bz2 ${TARGET}/*
+  check ${TARGET}
+}
 
 # Repack the mac builds.
+repack_mac() {
+  fetch_rustc $mac64
+  fetch_std $mac64 $mac32
 
-fetch_rustc $mac64
-fetch_std $mac64 $mac32
+  rm -rf ${TARGET}
 
-rm -rf ${TARGET}
+  install_rustc $mac64
+  install_std $mac64 $mac32
 
-install_rustc $mac64
-install_std $mac64 $mac32
-
-tar cjf rustc-mac-repack.tar.bz2 ${TARGET}/*
-check ${TARGET}
+  tar cjf rustc-mac-repack.tar.bz2 ${TARGET}/*
+  check ${TARGET}
+}
 
 # Repack mac cross build.
+repack_mac_cross() {
+  fetch_rustc $linux64
+  fetch_std $linux64
 
-fetch_rustc $linux64
-fetch_std $linux64
+  rm -rf ${TARGET}
 
-rm -rf ${TARGET}
+  install_rustc $linux64
+  install_std $linux64 $mac64 $mac32
 
-install_rustc $linux64
-install_std $linux64 $mac64 $mac32
+  tar cJf rustc-mac-cross-repack.tar.xz ${TARGET}/*
+  check ${TARGET}
+}
 
-tar cJf rustc-mac-cross-repack.tar.xz ${TARGET}/*
-check ${TARGET}
+repack_win32
+repack_win64
+repack_linux64
+repack_mac
+repack_mac_cross
 
 rm -rf ${TARGET}
