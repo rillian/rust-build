@@ -9,7 +9,9 @@ CORES=$(nproc || grep -c ^processor /proc/cpuinfo || sysctl -n hw.ncpu)
 set -v
 
 # Configure and build rust.
-OPTIONS="--enable-llvm-static-stdcpp --disable-docs --release-channel=stable"
+OPTIONS="--enable-llvm-static-stdcpp --disable-docs"
+OPTIONS+="--enable-debuginfo"
+OPTIONS+="--release-channel=stable"
 x32="i686-unknown-linux-gnu"
 x64="x86_64-unknown-linux-gnu"
 arm="arm-linux-androideabi"
