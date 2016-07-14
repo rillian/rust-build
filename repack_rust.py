@@ -12,17 +12,22 @@ import os
 def fetch_file(url):
   '''Download a file from the given url if it's not already present.'''
   filename = os.path.basename(url)
-  if not os.path.exists(filename):
-    os.system('curl -Os %s' %url)
+  if os.path.exists(filename):
+    return
+  r = requests.get(url, stream=True)
+  r.raise_for_status()
+  with open(filename, 'wb') as fd:
+    for chunk in r.iter_content(4096):
+      fd.write(chunk)
 
 def fetch(url):
   '''Download and verify a package url.'''
-  print('Fetching %s...' % url)
-  fetch_file('curl -Os %s.asc' % url)
-  fetch_file('curl -Os %s' % url)
-  fetch_file('curl -Os %s.sha256' % url)
-  fetch_file('curl -Os %s.asc.sha256' % url)
   base = os.path.basename(url)
+  print('Fetching %s...' % base)
+  fetch_file(url + '.asc')
+  fetch_file(url)
+  fetch_file(url + '.sha256')
+  fetch_file(url + '.asc.sha256')
   print('Verifying %s...' % base)
   # TODO: check for verification failure.
   os.system('shasum -c %s.sha256' % base)
