@@ -93,7 +93,13 @@ def repack(host, targets, channel='stable', suffix=''):
   for std in stds:
     install(os.path.basename(std['url']), install_dir)
   print('Tarring %s...' % tar_basename)
-  subprocess.check_call(['tar', 'cjf', tar_basename + '.tar.bz2', install_dir])
+  if 'linux' in host:
+      tar_options = 'cJf'
+      tar_ext = '.tar.xz'
+  else:
+      tar_options = 'cjf'
+      tar_ext = '.tar.bz2'
+  subprocess.check_call(['tar', tar_options, tar_basename + tar_ext, install_dir])
   subprocess.check_call(['rm', '-rf', install_dir])
 
 # rust platform triples
