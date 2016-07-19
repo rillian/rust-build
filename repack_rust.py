@@ -5,9 +5,10 @@ with the necessary tool and target support for the Firefox
 build environment.
 '''
 
+import os.path
 import requests
+import subprocess
 import toml
-import os
 
 def fetch_file(url):
   '''Download a file from the given url if it's not already present.'''
@@ -30,21 +31,23 @@ def fetch(url):
   fetch_file(url + '.asc.sha256')
   print('Verifying %s...' % base)
   # TODO: check for verification failure.
-  os.system('shasum -c %s.sha256' % base)
-  os.system('shasum -c %s.asc.sha256' % base)
-  os.system('gpg --verify %s.asc %s' % (base, base))
-  os.system('keybase verify %s.asc' % base)
+  subprocess.check_call(['shasum', '-c', base + '.sha256'])
+  subprocess.check_call(['shasum', '-c', base + '.asc.sha256'])
+  subprocess.check_call(['gpg', '--verify', base + '.asc', base])
+  subprocess.check_call(['keybase', 'verify', base + '.asc'])
 
 def install(filename, target):
   '''Run a package's installer script against the given target directory.'''
   print(' Unpacking %s...' % filename)
-  os.system('tar xf ' + filename)
+  subprocess.check_call(['tar', 'xf', filename])
   basename = filename.split('.tar')[0]
   print(' Installing %s...' % basename)
-  install_opts = '--prefix=${PWD}/%s --disable-ldconfig' % target
-  os.system('%s/install.sh %s' % (basename, install_opts))
+  install_cmd = [os.path.join(basename, 'install.sh')]
+  install_cmd += ['--prefix=' + os.path.abspath(target)]
+  install_cmd += ['--disable-ldconfig']
+  subprocess.check_call(install_cmd)
   print(' Cleaning %s...' % basename)
-  os.system('rm -rf %s' % basename)
+  subprocess.check_call(['rm', '-rf', basename])
 
 def package(manifest, pkg, target):
   '''Pull out the package dict for a particular package and target
@@ -54,6 +57,7 @@ def package(manifest, pkg, target):
   return (version, info)
 
 def repack(host, targets, channel='stable'):
+  print("Repacking rust for %s..." % host)
   url = 'https://static.rust-lang.org/dist/channel-rust-' + channel + '.toml'
   req = requests.get(url)
   req.raise_for_status()
@@ -80,14 +84,14 @@ def repack(host, targets, channel='stable'):
   print('Installing packages...')
   tar_basename = 'rustc-%s-repack' % host
   install_dir = 'rustc'
-  os.system('rm -rf %s' % install_dir)
+  subprocess.check_call(['rm', '-rf', install_dir])
   install(os.path.basename(rustc['url']), install_dir)
   install(os.path.basename(cargo['url']), install_dir)
   for std in stds:
     install(os.path.basename(std['url']), install_dir)
   print('Tarring %s...' % tar_basename)
-  os.system('tar cjf %s.tar.bz2 %s/*' % (tar_basename, install_dir))
-  os.system('rm -rf %s' % install_dir)
+  subprocess.check_call(['tar', 'cjf', tar_basename + '.tar.bz2', install_dir])
+  subprocess.check_call(['rm', '-rf', install_dir])
 
 # rust platform triples
 android="arm-linux-androideabi"
