@@ -59,6 +59,22 @@ def package(manifest, pkg, target):
   info = manifest['pkg'][pkg]['target'][target]
   return (version, info)
 
+def fetch_package(manifest, pkg, host):
+  version, info = package(manifest, pkg, host)
+  print('%s %s\n  %s\n  %s' % (pkg, version, info['url'], info['hash']))
+  if not info['available']:
+    print('%s marked unavailable for %s' % (pkg, host))
+    raise AssertionError
+  fetch(info['url'])
+  return info
+
+def fetch_std(manifest, targets):
+  stds = []
+  for target in targets:
+      info = fetch_package(manifest, 'rust-std', target)
+      stds.append(info)
+  return stds
+
 def repack(host, targets, channel='stable', suffix=''):
   print("Repacking rust for %s..." % host)
   url = 'https://static.rust-lang.org/dist/channel-rust-' + channel + '.toml'
@@ -69,21 +85,10 @@ def repack(host, targets, channel='stable', suffix=''):
     print('ERROR: unrecognized manifest version %s.' % manifest['manifest-version'])
     return
   print('Using manifest for rust %s as of %s.' % (channel, manifest['date']))
-  rustc_version, rustc = package(manifest, 'rustc', host)
-  if rustc['available']:
-    print('rustc %s\n  %s\n  %s' % (rustc_version, rustc['url'], rustc['hash']))
-    fetch(rustc['url'])
-  cargo_version, cargo = package(manifest, 'cargo', host)
-  if cargo['available']:
-    print('cargo %s\n  %s\n  %s' % (cargo_version, cargo['url'], cargo['hash']))
-    fetch(cargo['url'])
-  stds = []
-  for target in targets:
-      version, info = package(manifest, 'rust-std', target)
-      if info['available']:
-        print('rust-std %s\n  %s\n  %s' % (version, info['url'], info['hash']))
-        fetch(info['url'])
-        stds.append(info)
+  print('Fetching packages...')
+  rustc = fetch_package(manifest, 'rustc', host)
+  cargo = fetch_package(manifest, 'cargo', host)
+  stds = fetch_std(manifest, targets)
   print('Installing packages...')
   tar_basename = 'rustc-' + host
   if suffix:
