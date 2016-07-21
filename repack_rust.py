@@ -34,7 +34,10 @@ def fetch(url):
   subprocess.check_call(['shasum', '-c', base + '.sha256'])
   subprocess.check_call(['shasum', '-c', base + '.asc.sha256'])
   subprocess.check_call(['gpg', '--verify', base + '.asc', base])
-  subprocess.check_call(['keybase', 'verify', base + '.asc'])
+  subprocess.check_call(['keybase', 'pgp', 'verify',
+      '-d', base + '.asc',
+      '-i', base,
+  ])
 
 def install(filename, target):
   '''Run a package's installer script against the given target directory.'''
