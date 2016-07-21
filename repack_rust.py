@@ -74,6 +74,15 @@ def fetch_std(manifest, targets):
       stds.append(info)
   return stds
 
+def tar_for_host(host):
+  if 'linux' in host:
+      tar_options = 'cJf'
+      tar_ext = '.tar.xz'
+  else:
+      tar_options = 'cjf'
+      tar_ext = '.tar.bz2'
+  return tar_options, tar_ext
+
 def repack(host, targets, channel='stable', suffix=''):
   print("Repacking rust for %s..." % host)
   url = 'https://static.rust-lang.org/dist/channel-rust-' + channel + '.toml'
@@ -101,12 +110,48 @@ def repack(host, targets, channel='stable', suffix=''):
     install(os.path.basename(std['url']), install_dir)
     pass
   print('Tarring %s...' % tar_basename)
-  if 'linux' in host:
-      tar_options = 'cJf'
-      tar_ext = '.tar.xz'
-  else:
-      tar_options = 'cjf'
-      tar_ext = '.tar.bz2'
+  tar_options, tar_ext = tar_for_host(host)
+  subprocess.check_call(['tar', tar_options, tar_basename + tar_ext, install_dir])
+  subprocess.check_call(['rm', '-rf', install_dir])
+
+def repack_cargo(host, channel='nightly'):
+  print("Repacking cargo for %s..." % host)
+  # Cargo doesn't seem to have a .toml manifest.
+  base_url = 'https://static.rust-lang.org/cargo-dist/'
+  req = requests.get(os.path.join(base_url, 'channel-cargo-' + channel))
+  req.raise_for_status()
+  file = ''
+  for line in req.iter_lines():
+      if line.find(host) != -1:
+          file = line.strip()
+  if not file:
+      print('No manifest entry for %s!' % host)
+      return
+  manifest = {
+          'date': req.headers['Last-Modified'],
+          'pkg': {
+              'cargo': {
+                  'version': channel,
+                  'target': {
+                      host: {
+                          'url': os.path.join(base_url, file),
+                          'hash': None,
+                          'available': True,
+                      },
+                  },
+              },
+          },
+  }
+  print('Using manifest for cargo %s.' % channel)
+  print('Fetching packages...')
+  cargo = fetch_package(manifest, 'cargo', host)
+  print('Installing packages...')
+  install_dir = 'cargo'
+  subprocess.check_call(['rm', '-rf', install_dir])
+  install(os.path.basename(cargo['url']), install_dir)
+  tar_basename = 'cargo-%s-repack' % host
+  print('Tarring %s...' % tar_basename)
+  tar_options, tar_ext = tar_for_host(host)
   subprocess.check_call(['tar', tar_options, tar_basename + tar_ext, install_dir])
   subprocess.check_call(['rm', '-rf', install_dir])
 
