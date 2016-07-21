@@ -100,6 +100,7 @@ def repack(host, targets, channel='stable', suffix=''):
   install(os.path.basename(cargo['url']), install_dir)
   for std in stds:
     install(os.path.basename(std['url']), install_dir)
+    pass
   print('Tarring %s...' % tar_basename)
   if 'linux' in host:
       tar_options = 'cJf'
@@ -111,7 +112,7 @@ def repack(host, targets, channel='stable', suffix=''):
   subprocess.check_call(['rm', '-rf', install_dir])
 
 # rust platform triples
-android="arm-linux-androideabi"
+android="armv7-linux-androideabi"
 linux64="x86_64-unknown-linux-gnu"
 linux32="i686-unknown-linux-gnu"
 mac64="x86_64-apple-darwin"
@@ -125,3 +126,4 @@ if __name__ == '__main__':
   repack(win64, [win64])
   repack(linux64, [linux64, linux32])
   repack(linux64, [linux64, mac64, mac32], suffix='mac-cross')
+  repack(linux64, [linux64, android], suffix='android-cross')
