@@ -10,7 +10,6 @@ RUN yum upgrade -y
 RUN yum clean all
 
 # Install tooltool directly from github.
-RUN mkdir /builds
 ADD https://raw.githubusercontent.com/mozilla/build-tooltool/master/tooltool.py /build/tooltool.py
 RUN chmod +rx /build/tooltool.py
 
