@@ -5,10 +5,6 @@ MAINTAINER    Ralph Giles <giles@mozilla.com>
 WORKDIR /
 USER root
 
-# Update base.
-RUN yum upgrade -y
-RUN yum clean all
-
 # Install tooltool directly from github.
 ADD https://raw.githubusercontent.com/mozilla/build-tooltool/master/tooltool.py /build/tooltool.py
 RUN chmod +rx /build/tooltool.py
