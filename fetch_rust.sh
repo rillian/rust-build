@@ -5,7 +5,7 @@ set -x -e
 # Inputs, with defaults
 
 : RUST_REPOSITORY ${RUST_REPOSITORY:=https://github.com/rust-lang/rust}
-: RUST_BRANCH     ${RUST_BRANCH:=stable}
+: RUST_BRANCH     ${RUST_BRANCH:=1.10.0}
 
 : WORKSPACE       ${WORKSPACE:=/home/worker}
 
