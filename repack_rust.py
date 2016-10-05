@@ -158,7 +158,7 @@ def repack_cargo(host, channel='nightly'):
 # rust platform triples
 android="armv7-linux-androideabi"
 linux64="x86_64-unknown-linux-gnu"
-linux32="i686-unknown-linux-gnu"
+linux32="i586-unknown-linux-gnu"
 mac64="x86_64-apple-darwin"
 mac32="i686-apple-darwin"
 win64="x86_64-pc-windows-msvc"
