@@ -170,7 +170,7 @@ def upload_to_tooltool(tooltool_auth, task_id, artifact):
         os.chdir(oldcwd)
 
 def update_manifest(artifact, manifest, local_gecko_clone):
-    platform = linux
+    platform = 'linux'
     manifest_dir = os.path.join(local_gecko_clone,
                                 'testing', 'config', 'tooltool-manifests')
     platform_dir = [p for p in os.listdir(manifest_dir)
