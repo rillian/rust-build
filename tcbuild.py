@@ -8,7 +8,6 @@ the in-tree tooltool manifests.
 from __future__ import print_function
 
 import requests.packages.urllib3
-requests.packages.urllib3.disable_warnings()
 
 import argparse
 import datetime
