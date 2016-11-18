@@ -171,7 +171,3 @@ if __name__ == '__main__':
   repack(linux64, [linux64, linux32])
   repack(linux64, [linux64, mac64, mac32], suffix='mac-cross')
   repack(linux64, [linux64, android], suffix='android-cross')
-  repack_cargo(mac64)
-  repack_cargo(win32)
-  repack_cargo(win64)
-  repack_cargo(linux64)
