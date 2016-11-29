@@ -63,6 +63,7 @@ TARGETS = {
             ],
         'x86_64-unknown-linux-gnu-android-cross-repack': [
             'mobile/android/config/tooltool-manifests/android/releng.manifest',
+            'mobile/android/config/tooltool-manifests/android-x86/releng.manifest',
             ],
         'x86_64-unknown-linux-gnu-mac-cross-repack': [
             'browser/config/tooltool-manifests/macosx64/cross-releng.manifest',
