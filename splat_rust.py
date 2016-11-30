@@ -58,6 +58,9 @@ TARGETS = {
             'b2g/dev/config/tooltool-manifests/linux64/hazard.manifest',
             'b2g/dev/config/tooltool-manifests/linux64/releng.manifest',
             'browser/config/tooltool-manifests/linux32/releng.manifest',
+            'browser/config/tooltool-manifests/linux64/asan.manifest',
+            'browser/config/tooltool-manifests/linux64/clang.manifest',
+            'browser/config/tooltool-manifests/linux64/clang.manifest.centos6',
             'browser/config/tooltool-manifests/linux64/hazard.manifest',
             'browser/config/tooltool-manifests/linux64/releng.manifest',
             ],
@@ -69,6 +72,7 @@ TARGETS = {
             'browser/config/tooltool-manifests/macosx64/cross-releng.manifest',
             ],
         'x86_64-apple-darwin-repack': [
+            'browser/config/tooltool-manifests/macosx64/clang.manifest',
             'browser/config/tooltool-manifests/macosx64/releng.manifest',
             ],
         'x86_64-pc-windows-msvc-repack': [
