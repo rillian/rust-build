@@ -101,7 +101,8 @@ def repack(host, targets, channel='stable', suffix=''):
   req.raise_for_status()
   manifest = toml.loads(req.content)
   if manifest['manifest-version'] != '2':
-    print('ERROR: unrecognized manifest version %s.' % manifest['manifest-version'])
+    print('ERROR: unrecognized manifest version %s.' %
+            manifest['manifest-version'])
     return
   print('Using manifest for rust %s as of %s.' % (channel, manifest['date']))
   print('Fetching packages...')
@@ -122,7 +123,8 @@ def repack(host, targets, channel='stable', suffix=''):
     pass
   print('Tarring %s...' % tar_basename)
   tar_options, tar_ext = tar_for_host(host)
-  subprocess.check_call(['tar', tar_options, tar_basename + tar_ext, install_dir])
+  subprocess.check_call(
+      ['tar', tar_options, tar_basename + tar_ext, install_dir])
   subprocess.check_call(['rm', '-rf', install_dir])
 
 def repack_cargo(host, channel='nightly'):
@@ -163,18 +165,19 @@ def repack_cargo(host, channel='nightly'):
   tar_basename = 'cargo-%s-repack' % host
   print('Tarring %s...' % tar_basename)
   tar_options, tar_ext = tar_for_host(host)
-  subprocess.check_call(['tar', tar_options, tar_basename + tar_ext, install_dir])
+  subprocess.check_call(
+      ['tar', tar_options, tar_basename + tar_ext, install_dir])
   subprocess.check_call(['rm', '-rf', install_dir])
 
 # rust platform triples
-android="armv7-linux-androideabi"
-android_x86="i686-linux-android"
-linux64="x86_64-unknown-linux-gnu"
-linux32="i686-unknown-linux-gnu"
-mac64="x86_64-apple-darwin"
-mac32="i686-apple-darwin"
-win64="x86_64-pc-windows-msvc"
-win32="i686-pc-windows-msvc"
+android = "armv7-linux-androideabi"
+android_x86 = "i686-linux-android"
+linux64 = "x86_64-unknown-linux-gnu"
+linux32 = "i686-unknown-linux-gnu"
+mac64 = "x86_64-apple-darwin"
+mac32 = "i686-apple-darwin"
+win64 = "x86_64-pc-windows-msvc"
+win32 = "i686-pc-windows-msvc"
 
 if __name__ == '__main__':
   repack(mac64, [mac64, mac32])
