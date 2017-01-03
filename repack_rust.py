@@ -5,6 +5,7 @@ with the necessary tool and target support for the Firefox
 build environment.
 '''
 
+import argparse
 import os.path
 import sys
 
@@ -189,10 +190,19 @@ mac32 = "i686-apple-darwin"
 win64 = "x86_64-pc-windows-msvc"
 win32 = "i686-pc-windows-msvc"
 
+def args():
+    '''Read command line arguments and return options.'''
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--channel',
+            help='Release channel to use: stable, beta, or nightly')
+    args = parser.parse_args()
+    if args.channel:
+        return args.channel
+    else:
+        return 'stable'
+
 if __name__ == '__main__':
-    channel = 'stable'
-    if len(sys.argv) > 1:
-        channel = sys.argv[1]
+    channel = args()
     repack(mac64, [mac64, mac32], channel=channel)
     repack(win32, [win32], channel=channel)
     repack(win64, [win64], channel=channel)
