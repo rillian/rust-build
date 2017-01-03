@@ -190,9 +190,14 @@ win64 = "x86_64-pc-windows-msvc"
 win32 = "i686-pc-windows-msvc"
 
 if __name__ == '__main__':
-    repack(mac64, [mac64, mac32])
-    repack(win32, [win32])
-    repack(win64, [win64])
-    repack(linux64, [linux64, linux32])
-    repack(linux64, [linux64, mac64, mac32], suffix='mac-cross')
-    repack(linux64, [linux64, android, android_x86], suffix='android-cross')
+    channel = 'stable'
+    if len(sys.argv) > 1:
+        channel = sys.argv[1]
+    repack(mac64, [mac64, mac32], channel=channel)
+    repack(win32, [win32], channel=channel)
+    repack(win64, [win64], channel=channel)
+    repack(linux64, [linux64, linux32], channel=channel)
+    repack(linux64, [linux64, mac64, mac32],
+           channel=channel, suffix='mac-cross')
+    repack(linux64, [linux64, android, android_x86],
+           channel=channel, suffix='android-cross')
