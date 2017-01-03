@@ -190,11 +190,12 @@ mac32 = "i686-apple-darwin"
 win64 = "x86_64-pc-windows-msvc"
 win32 = "i686-pc-windows-msvc"
 
+
 def args():
     '''Read command line arguments and return options.'''
     parser = argparse.ArgumentParser()
-    parser.add_argument('--channel',
-            help='Release channel to use: stable, beta, or nightly')
+    parser.add_argument('--channel', help='Release channel to use: '
+                                          'stable, beta, or nightly')
     args = parser.parse_args()
     if args.channel:
         return args.channel
