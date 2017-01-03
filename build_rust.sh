@@ -21,7 +21,7 @@ x86_android="i686-linux-android"
 mkdir -p ${WORKSPACE}/rust-build
 pushd ${WORKSPACE}/rust-build
 ${WORKSPACE}/rust/configure --prefix=${WORKSPACE}/rustc \
-  --target=${x64},${i586} ${OPTIONS}
+  --target=${x64},${i686} ${OPTIONS}
 make -j ${CORES}
 make dist
 make install
