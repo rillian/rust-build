@@ -15,7 +15,8 @@ OPTIONS+="--release-channel=stable"
 i586="i586-unknown-linux-gnu"
 i686="i686-unknown-linux-gnu"
 x64="x86_64-unknown-linux-gnu"
-arm="arm-linux-androideabi"
+arm_android="arm-linux-androideabi"
+x86_android="i686-linux-android"
 
 mkdir -p ${WORKSPACE}/rust-build
 pushd ${WORKSPACE}/rust-build
