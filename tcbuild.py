@@ -65,7 +65,7 @@ def spawn_task(queue, args):
         expires = (now + datetime.timedelta(days=1))
         keys['task_created'] = now.isoformat() + 'Z'
         keys['task_deadline'] = deadline.isoformat() + 'Z'
-        keys['artifacts_expires'] = expires.isoformat() + 'Z'
+        keys['artifact_expires'] = expires.isoformat() + 'Z'
         payload = fill_template(template, keys)
     queue.createTask(task_id, payload)
     print('--- %s task %s submitted ---' % (now, task_id))
