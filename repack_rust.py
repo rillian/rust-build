@@ -7,6 +7,7 @@ build environment.
 
 import argparse
 import os.path
+import re
 import sys
 
 import requests
