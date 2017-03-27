@@ -44,11 +44,9 @@ def fetch(url):
     fetch_file(url + '.asc')
     fetch_file(url)
     fetch_file(url + '.sha256')
-    fetch_file(url + '.asc.sha256')
     log('Verifying %s...' % base)
     shasum = sha256sum()
     subprocess.check_call([shasum, '-c', base + '.sha256'])
-    subprocess.check_call([shasum, '-c', base + '.asc.sha256'])
     subprocess.check_call(['gpg', '--verify', base + '.asc', base])
     if False:
         subprocess.check_call([
