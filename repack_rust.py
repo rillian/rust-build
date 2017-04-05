@@ -210,11 +210,11 @@ def args():
 
 if __name__ == '__main__':
     channel = args()
-    repack(mac64, [mac64, mac32], channel=channel)
+    repack(mac64, [mac64], channel=channel)
     repack(win32, [win32], channel=channel)
     repack(win64, [win64], channel=channel)
     repack(linux64, [linux64, linux32], channel=channel)
-    repack(linux64, [linux64, mac64, mac32],
+    repack(linux64, [linux64, mac64],
            channel=channel, suffix='mac-cross')
     repack(linux64, [linux64, android, android_x86],
            channel=channel, suffix='android-cross')
