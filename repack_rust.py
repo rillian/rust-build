@@ -62,7 +62,6 @@ def install(filename, target):
     subprocess.check_call(['tar', 'xf', filename])
     basename = filename.split('.tar')[0]
     # Work around bad tarball naming in 1.15+ cargo packages.
-    basename = basename.replace('cargo-beta', 'cargo-nightly')
     basename = re.sub(r'cargo-0\.[\d\.]+', 'cargo-nightly', basename)
     log('Installing %s...' % basename)
     install_cmd = [os.path.join(basename, 'install.sh')]
