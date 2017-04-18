@@ -188,6 +188,7 @@ def repack_cargo(host, channel='nightly'):
 # rust platform triples
 android = "armv7-linux-androideabi"
 android_x86 = "i686-linux-android"
+android_aarch64 = "aarch64-linux-android"
 linux64 = "x86_64-unknown-linux-gnu"
 linux32 = "i686-unknown-linux-gnu"
 mac64 = "x86_64-apple-darwin"
@@ -215,5 +216,5 @@ if __name__ == '__main__':
     repack(linux64, [linux64, linux32], channel=channel)
     repack(linux64, [linux64, mac64],
            channel=channel, suffix='mac-cross')
-    repack(linux64, [linux64, android, android_x86],
+    repack(linux64, [linux64, android, android_x86, android_aarch64],
            channel=channel, suffix='android-cross')
