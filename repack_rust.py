@@ -114,10 +114,10 @@ def fetch_manifest(channel='stable'):
     req.raise_for_status()
     manifest = toml.loads(req.content)
     if manifest['manifest-version'] != '2':
-        log('ERROR: unrecognized manifest version %s.' %
-            manifest['manifest-version'])
-        return None
+        raise NotImplementedError('Unrecognized manifest version %s.' %
+                                  manifest['manifest-version'])
     return manifest
+
 
 def repack(host, targets, channel='stable', suffix='', cargo_channel=None):
     log("Repacking rust for %s..." % host)
