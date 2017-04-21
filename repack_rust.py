@@ -214,16 +214,19 @@ win32 = "i686-pc-windows-msvc"
 def args():
     '''Read command line arguments and return options.'''
     parser = argparse.ArgumentParser()
-    parser.add_argument('--channel', help='Release channel to use: '
-                                          'stable, beta, or nightly',
-                                          default='stable')
-    parser.add_argument('--cargo-channel', help='Release channel to use for cargo: '
-                                                'stable, beta, or nightly.'
-                                                'Defaults to the same as --channel.')
+    parser.add_argument('--channel',
+                        help='Release channel to use: '
+                             'stable, beta, or nightly',
+                        default='stable')
+    parser.add_argument('--cargo-channel',
+                        help='Release channel to use for cargo: '
+                             'stable, beta, or nightly.'
+                             'Defaults to the same as --channel.')
     args = parser.parse_args()
     if not args.cargo_channel:
-      args.cargo_channel = args.channel
+        args.cargo_channel = args.channel
     return args
+
 
 if __name__ == '__main__':
     args = vars(args())
