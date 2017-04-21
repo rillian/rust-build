@@ -108,8 +108,7 @@ def tar_for_host(host):
     return tar_options, tar_ext
 
 
-def repack(host, targets, channel='stable', suffix=''):
-    log("Repacking rust for %s..." % host)
+def fetch_manifest(channel='stable'):
     url = 'https://static.rust-lang.org/dist/channel-rust-' + channel + '.toml'
     req = requests.get(url)
     req.raise_for_status()
@@ -117,12 +116,26 @@ def repack(host, targets, channel='stable', suffix=''):
     if manifest['manifest-version'] != '2':
         log('ERROR: unrecognized manifest version %s.' %
             manifest['manifest-version'])
-        return
+        return None
+    return manifest
+
+def repack(host, targets, channel='stable', suffix='', cargo_channel=None):
+    log("Repacking rust for %s..." % host)
+
+    manifest = fetch_manifest(channel)
     log('Using manifest for rust %s as of %s.' % (channel, manifest['date']))
+    if cargo_channel == channel:
+        cargo_manifest = manifest
+    else:
+        cargo_manifest = fetch_manifest(cargo_channel)
+        log('Using manifest for cargo %s as of %s.' %
+            (cargo_channel, cargo_manifest['date']))
+
     log('Fetching packages...')
     rustc = fetch_package(manifest, 'rustc', host)
-    cargo = fetch_package(manifest, 'cargo', host)
+    cargo = fetch_package(cargo_manifest, 'cargo', host)
     stds = fetch_std(manifest, targets)
+
     log('Installing packages...')
     tar_basename = 'rustc-' + host
     if suffix:
@@ -135,6 +148,7 @@ def repack(host, targets, channel='stable', suffix=''):
     for std in stds:
         install(os.path.basename(std['url']), install_dir)
         pass
+
     log('Tarring %s...' % tar_basename)
     tar_options, tar_ext = tar_for_host(host)
     subprocess.check_call(
@@ -201,20 +215,29 @@ def args():
     '''Read command line arguments and return options.'''
     parser = argparse.ArgumentParser()
     parser.add_argument('--channel', help='Release channel to use: '
-                                          'stable, beta, or nightly')
+                                          'stable, beta, or nightly',
+                                          default='stable')
+    parser.add_argument('--cargo-channel', help='Release channel to use for cargo: '
+                                                'stable, beta, or nightly.'
+                                                'Defaults to the same as --channel.')
     args = parser.parse_args()
-    if args.channel:
-        return args.channel
-    else:
-        return 'stable'
+    if not args.cargo_channel:
+      args.cargo_channel = args.channel
+    return args
 
 if __name__ == '__main__':
-    channel = args()
-    repack(mac64, [mac64], channel=channel)
-    repack(win32, [win32], channel=channel)
-    repack(win64, [win64], channel=channel)
-    repack(linux64, [linux64, linux32], channel=channel)
+    args = args()
+    repack(mac64, [mac64],
+           channel=args.channel, cargo_channel=args.cargo_channel)
+    repack(win32, [win32],
+           channel=args.channel, cargo_channel=args.cargo_channel)
+    repack(win64, [win64],
+           channel=args.channel, cargo_channel=args.cargo_channel)
+    repack(linux64, [linux64, linux32],
+           channel=args.channel, cargo_channel=args.cargo_channel)
     repack(linux64, [linux64, mac64],
-           channel=channel, suffix='mac-cross')
+           channel=args.channel, cargo_channel=args.cargo_channel,
+           suffix='mac-cross')
     repack(linux64, [linux64, android, android_x86, android_aarch64],
-           channel=channel, suffix='android-cross')
+           channel=args.channel, cargo_channel=args.cargo_channel,
+           suffix='android-cross')
