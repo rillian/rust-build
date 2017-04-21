@@ -226,18 +226,11 @@ def args():
     return args
 
 if __name__ == '__main__':
-    args = args()
-    repack(mac64, [mac64],
-           channel=args.channel, cargo_channel=args.cargo_channel)
-    repack(win32, [win32],
-           channel=args.channel, cargo_channel=args.cargo_channel)
-    repack(win64, [win64],
-           channel=args.channel, cargo_channel=args.cargo_channel)
-    repack(linux64, [linux64, linux32],
-           channel=args.channel, cargo_channel=args.cargo_channel)
-    repack(linux64, [linux64, mac64],
-           channel=args.channel, cargo_channel=args.cargo_channel,
-           suffix='mac-cross')
+    args = vars(args())
+    repack(mac64, [mac64], **args)
+    repack(win32, [win32], **args)
+    repack(win64, [win64], **args)
+    repack(linux64, [linux64, linux32], **args)
+    repack(linux64, [linux64, mac64], suffix='mac-cross', **args)
     repack(linux64, [linux64, android, android_x86, android_aarch64],
-           channel=args.channel, cargo_channel=args.cargo_channel,
-           suffix='android-cross')
+           suffix='android-cross', **args)
