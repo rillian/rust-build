@@ -50,7 +50,7 @@ def fetch(url):
     shasum = sha256sum()
     subprocess.check_call([shasum, '-c', base + '.sha256'])
     subprocess.check_call(['gpg', '--verify', base + '.asc', base])
-    if False:
+    if True:
         subprocess.check_call([
             'keybase', 'pgp', 'verify', '-d', base + '.asc', '-i', base,
         ])
